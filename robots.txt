@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://quantaraservices.in/sitemap.xml
