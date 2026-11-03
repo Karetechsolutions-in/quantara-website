@@ -52,10 +52,17 @@
           status.textContent = 'Thank you. Your enquiry has been sent and our team will respond within 1 business day.';
           status.className = 'form-status ok';
           form.reset();
-        } else { throw new Error('fail'); }
+        } else { throw new Error((res.j && res.j.message) || 'fail'); }
       })
-      .catch(function () {
+      .catch(function (err) {
+        var reason = err && err.message && err.message !== 'fail' && err.message.indexOf('Failed to fetch') === -1 ? err.message : '';
         status.innerHTML = 'Sorry, the message could not be sent. Please email <a href="mailto:contact@quantaraservices.in"><u>contact@quantaraservices.in</u></a> or call +91 99021 06188.';
+        if (reason) {
+          var small = document.createElement('div');
+          small.style.cssText = 'margin-top:8px;font-size:13px;font-weight:500;opacity:.85';
+          small.textContent = 'Details: ' + reason;
+          status.appendChild(small);
+        }
         status.className = 'form-status err';
       })
       .finally(function () { btn.disabled = false; btn.textContent = label; });
