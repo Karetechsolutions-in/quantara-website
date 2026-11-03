@@ -44,6 +44,14 @@
     btn.disabled = true;
     var label = btn.textContent;
     btn.textContent = 'Sending...';
+    var val = function (n) { var el = form.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ''; };
+    var who = val('Company') || val('Full name');
+    var country = val('Country');
+    var service = val('Service required');
+    var subj = form.querySelector('[name="_subject"]');
+    if (subj) {
+      subj.value = 'New enquiry: ' + (who || 'Website visitor') + (country ? ' (' + country + ')' : '') + (service ? ' – ' + service : '');
+    }
     var data = new FormData(form);
     fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
